@@ -47,6 +47,9 @@ class AddTest(unittest.TestCase):
     def test_can_specify_multiple_delimiters(self):
         self.assertEqual(6, calculator.add("//[*][%]\n1*2%3"))
 
+    def test_can_specify_multiple_delimiters_longer_than_one_char(self):
+        self.assertEqual(6, calculator.add("//[*][%%]\n1*2%%3"))
+
 
 if __name__ == '__main__':
     unittest.main()
