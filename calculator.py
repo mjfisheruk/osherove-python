@@ -24,7 +24,9 @@ def _split_into_numbers(numbers_str, delimiter):
         if n == '':
             continue
         value = int(n)
-        if value < 0:
+        if value > 1000:
+            continue
+        elif value < 0:
             invalid_numbers.append(value)
         else:
             valid_numbers.append(value)

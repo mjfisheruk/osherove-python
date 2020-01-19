@@ -35,6 +35,12 @@ class AddTest(unittest.TestCase):
             calculator.add("2,-1,4,-4")
         self.assertListEqual([-1, -4], context.exception.args[0])
 
+    def test_numbers_bigger_than_1000_ignored(self):
+        self.assertEqual(2, calculator.add("2,1001"))
+
+    def test_numbers_equal_to_1000_not_ignored(self):
+        self.assertEqual(1002, calculator.add("2,1000"))
+
 
 if __name__ == '__main__':
     unittest.main()
