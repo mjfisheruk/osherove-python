@@ -27,6 +27,14 @@ class AddTest(unittest.TestCase):
     def test_custom_delimiter_as_digit_is_allowed(self):
         self.assertEqual(6, calculator.add("//1\n313"))
 
+    def test_negative_numbers_raises_value_error(self):
+        self.assertRaises(ValueError, calculator.add, "3,-1,2")
+
+    def test_negative_numbers_returned_in_value_error(self):
+        with self.assertRaises(ValueError) as context:
+            calculator.add("2,-1,4,-4")
+        self.assertListEqual([-1, -4], context.exception.args[0])
+
 
 if __name__ == '__main__':
     unittest.main()
