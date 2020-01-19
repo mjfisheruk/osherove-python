@@ -41,6 +41,9 @@ class AddTest(unittest.TestCase):
     def test_numbers_equal_to_1000_not_ignored(self):
         self.assertEqual(1002, calculator.add("2,1000"))
 
+    def test_delimiters_can_be_any_length(self):
+        self.assertEqual(6, calculator.add("//[***]\n1***2***3"))
+
 
 if __name__ == '__main__':
     unittest.main()

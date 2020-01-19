@@ -1,17 +1,28 @@
 import re
 
 
+def _has_custom_delimiter(numbers_str):
+    return re.match(r"//(.+?)\n", numbers_str) is not None
+
+
 def _extract_delimiter(numbers_str):
-    m = re.match("^//(.)\n", numbers_str)
-    if m:
-        return m.group(1)
-    return ","
+    if not _has_custom_delimiter(numbers_str):
+        return ","
+    first_line = numbers_str.split("\n")[0]
+    # Remove leading double slash:
+    delimiter = first_line[2:]
+    # Delimiter can be of any length, but is optionally
+    # surrounded by square brackets:
+    if delimiter.startswith("[") and delimiter.endswith("]"):
+        delimiter = delimiter[1:-1]
+    return delimiter
 
 
 def _normalize_numbers_str(numbers_str, delimiter):
-    m = re.match("^//(.)\n", numbers_str)
-    if m:
-        numbers_str = numbers_str[m.end():]
+    if _has_custom_delimiter(numbers_str):
+        # Remove the first line which specifies the custom
+        # delimiter:
+        numbers_str = "".join(numbers_str.split("\n")[1:])
     return numbers_str.replace("\n", delimiter)
 
 
