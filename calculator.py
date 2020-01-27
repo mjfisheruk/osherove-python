@@ -1,10 +1,13 @@
 import re
 
-default_delimiter = ","
+DEFAULT_DELIMITER = ","
 
 
-def _has_custom_delimiter(numbers_str):
-    return re.match(r"//(.+?)\n", numbers_str) is not None
+def add(numbers_str):
+    delimiters = _extract_delimiters(numbers_str)
+    normalized_str = _normalize_numbers_str(numbers_str, delimiters)
+    numbers = _split_into_numbers(normalized_str)
+    return sum(numbers)
 
 
 def _extract_delimiters(numbers_str):
@@ -26,6 +29,10 @@ def _extract_delimiters(numbers_str):
     return [delimiter]
 
 
+def _has_custom_delimiter(numbers_str):
+    return re.match(r"//(.+?)\n", numbers_str) is not None
+
+
 def _normalize_numbers_str(numbers_str, delimiters):
     """
     Removes any custom delimiter first line, and replaces
@@ -36,12 +43,12 @@ def _normalize_numbers_str(numbers_str, delimiters):
         # delimiter:
         numbers_str = "".join(numbers_str.split("\n")[1:])
     for delimiter in delimiters:
-        numbers_str = numbers_str.replace(delimiter, default_delimiter)
-    return numbers_str.replace("\n", default_delimiter)
+        numbers_str = numbers_str.replace(delimiter, DEFAULT_DELIMITER)
+    return numbers_str.replace("\n", DEFAULT_DELIMITER)
 
 
 def _split_into_numbers(numbers_str):
-    parts = numbers_str.split(default_delimiter)
+    parts = numbers_str.split(DEFAULT_DELIMITER)
     valid_numbers = []
     invalid_numbers = []
     for n in parts:
@@ -57,10 +64,3 @@ def _split_into_numbers(numbers_str):
     if len(invalid_numbers) > 0:
         raise ValueError(invalid_numbers)
     return valid_numbers
-
-
-def add(numbers_str):
-    delimiters = _extract_delimiters(numbers_str)
-    normalized_str = _normalize_numbers_str(numbers_str, delimiters)
-    numbers = _split_into_numbers(normalized_str)
-    return sum(numbers)
